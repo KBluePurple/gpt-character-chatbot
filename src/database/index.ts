@@ -2,7 +2,6 @@ import {Channel, DMChannel, TextChannel} from "discord.js";
 import {DataSource} from "typeorm";
 
 import {ChatData, DeletedChatData, EditedChatData} from "./entity/chatData";
-import {ChatSession} from "../ai/chatSession";
 import {ChannelData} from "./entity/channelData";
 
 export class Database {

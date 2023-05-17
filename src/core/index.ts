@@ -38,9 +38,7 @@ export class CharacterBot {
 
     private async handleMessage(message: Message) {
         if (message.author.bot) return;
-
-        const session = await this.getSession(message);
-
+        await this.getSession(message);
         // 대화 기록을 저장
         Database.instance.saveChatData(Util.messageToChatData(message))
             .then((_) => console.log("Human Chat data saved."));
@@ -147,7 +145,7 @@ export class CharacterBot {
     private async getChatHistory(sessionId: string, message: Message): Promise<BaseChatMessage[]> {
         let result: ChatData[] = [...await Database.instance.getChatDataList(sessionId, maxMessageCount)];
 
-        let discordChatList = await this.getChatHistoryFromDiscord(message, sessionId, maxMessageCount);
+        let discordChatList = await this.getChatHistoryFromDiscord(message, maxMessageCount);
         discordChatList = discordChatList.filter((discordMessage) => {
             for (const chatData of result) {
                 if (chatData.messageId === discordMessage.messageId) {
@@ -165,7 +163,7 @@ export class CharacterBot {
         return result.map((chatData) => Util.chatDataToBaseChatMessage(chatData, this._character));
     }
 
-    private async getChatHistoryFromDiscord(message: Message, sessionId: string, maxCount: number): Promise<ChatData[]> {
+    private async getChatHistoryFromDiscord(message: Message, maxCount: number): Promise<ChatData[]> {
         const result: ChatData[] = [];
 
         let discordChatList = await message.channel.messages.fetch({
