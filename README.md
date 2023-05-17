@@ -1,1 +1,1 @@
-# gpt-character-chatbot
+# Discord Character Chatbot
